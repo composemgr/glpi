@@ -43,7 +43,7 @@ services:
       MARIADB_PASSWORD: ${DB_USER_PASS:-changeme_db_password}
       MARIADB_ROOT_PASSWORD: ${DB_ADMIN_PASS:-changeme_root_password}
     volumes:
-      - ./rootfs/db/mariadb/glpi:/var/lib/mysql
+      - ./rootfs/data/db/mariadb/glpi:/var/lib/mysql
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
