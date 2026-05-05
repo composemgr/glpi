@@ -19,8 +19,8 @@ services:
     environment:
       TZ: ${TZ:-America/New_York}
     volumes:
-      - ./rootfs/data/glpi:/data
-      - ./rootfs/config/glpi:/config
+      - ./volumes/data/glpi:/data
+      - ./volumes/config/glpi:/config
     depends_on:
       - glpi-db
     healthcheck:
@@ -43,7 +43,7 @@ services:
       MARIADB_PASSWORD: ${DB_USER_PASS:-changeme_db_password}
       MARIADB_ROOT_PASSWORD: ${DB_ADMIN_PASS:-changeme_root_password}
     volumes:
-      - ./rootfs/data/db/mariadb/glpi:/var/lib/mysql
+      - ./volumes/data/db/mariadb/glpi:/var/lib/mysql
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
