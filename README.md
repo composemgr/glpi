@@ -50,9 +50,9 @@ See `docker-compose.yaml` for complete list of configurable options.
 
 ## 📂 Volumes
 
-- `./rootfs/data/glpi` - Data storage
-- `./rootfs/config/glpi` - Data storage
-- `./rootfs/data/db/mariadb/glpi` - Data storage
+- `./volumes/data/glpi` - Data storage
+- `./volumes/config/glpi` - Data storage
+- `./volumes/data/db/mariadb/glpi` - Data storage
 
 ## 🔐 Security
 
