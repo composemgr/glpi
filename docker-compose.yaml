@@ -21,7 +21,7 @@ services:
     ports:
       - "172.17.0.1:8088:80"
     environment:
-      TZ: ${TZ:-America/New_York}
+      TIMEZONE: ${TZ:-America/New_York}
       VERSION_GLPI: ${GLPI_VERSION:-latest}
       CONTAINER_NAME: glpi-app
       HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
@@ -53,6 +53,7 @@ services:
     image: mariadb:latest
     pull_policy: always
     container_name: glpi-db
+    hostname: mariadb
     restart: always
     logging: *default-logging
     networks:
