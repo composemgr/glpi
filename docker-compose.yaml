@@ -1,5 +1,6 @@
 # nginx proxy address - http://172.17.0.1:8088
 
+name: glpi
 x-logging: &default-logging
   driver: json-file
   options:
@@ -7,32 +8,32 @@ x-logging: &default-logging
     max-file: "1"
 
 services:
-  glpi:
+  app:
     image: diouxx/glpi:latest
+    pull_policy: always
     container_name: glpi-app
-    restart: unless-stopped
+    restart: always
     logging: *default-logging
     networks:
       - glpi
     ports:
-      - "8088:80"
+      - "172.17.0.1:8088:80"
     environment:
       TZ: ${TZ:-America/New_York}
+      VERSION_GLPI: ${GLPI_VERSION:-latest}
     volumes:
-      - ./volumes/data/glpi:/data
-      - ./volumes/config/glpi:/config
+      - ./volumes/data/glpi/files:/var/www/html/files
+      - ./volumes/data/glpi/plugins:/var/www/html/plugins
+      - ./volumes/config/glpi:/etc/glpi
     depends_on:
-      - glpi-db
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      glpi-db:
+        condition: service_healthy
 
   glpi-db:
-    image: mariadb:11
+    image: mariadb:latest
+    pull_policy: always
     container_name: glpi-db
-    restart: unless-stopped
+    restart: always
     logging: *default-logging
     networks:
       - glpi
@@ -41,7 +42,7 @@ services:
       MARIADB_DATABASE: ${DB_CREATE_DATABASE_NAME:-glpi}
       MARIADB_USER: ${DB_USER_NAME:-glpi}
       MARIADB_PASSWORD: ${DB_USER_PASS:-changeme_db_password}
-      MARIADB_ROOT_PASSWORD: ${DB_ADMIN_PASS:-changeme_root_password}
+      MARIADB_ROOT_PASSWORD: ${DB_ADMIN_PASS:-changeme_admin_password}
     volumes:
       - ./volumes/data/db/mariadb/glpi:/var/lib/mysql
     healthcheck:
@@ -52,4 +53,5 @@ services:
 
 networks:
   glpi:
+    name: glpi
     external: false
